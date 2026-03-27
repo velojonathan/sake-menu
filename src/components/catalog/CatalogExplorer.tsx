@@ -31,6 +31,7 @@ function CatalogExplorerInner({ sakes, flavorTags }: CatalogExplorerProps) {
     filters.acidityMin !== undefined || filters.acidityMax !== undefined,
     filters.priceMin !== undefined || filters.priceMax !== undefined,
     filters.flavors && filters.flavors.length > 0,
+    !!filters.search,
   ].filter(Boolean).length;
 
   return (
@@ -83,7 +84,6 @@ function CatalogExplorerInner({ sakes, flavorTags }: CatalogExplorerProps) {
             <button
               onClick={() => {
                 setFilters({});
-                setSearch('');
               }}
               className="label-sm text-tertiary hover:text-tertiary-container transition-colors"
             >
