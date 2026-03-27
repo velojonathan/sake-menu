@@ -44,7 +44,21 @@ export default function SakeCard({ sake, compact }: SakeCardProps) {
         {sake.description}
       </p>
 
-      {/* Bottom row: SMV, Polishing, Price */}
+      {/* Flavor pills */}
+      {sake.flavorTags.length > 0 && (
+        <div className="flex flex-wrap gap-1.5 mb-4">
+          {sake.flavorTags.slice(0, 3).map((tag) => (
+            <span
+              key={tag}
+              className="px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container font-label text-[9px] uppercase tracking-wider"
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+      )}
+
+      {/* Bottom row: SMV, Acidity, Price */}
       <div className="flex items-baseline gap-6">
         {sake.smv != null && (
           <div>

@@ -14,7 +14,7 @@ export default async function HomePage() {
   return (
     <>
       <Header />
-      <main className="max-w-2xl mx-auto px-6 pt-16">
+      <main className="max-w-2xl mx-auto pl-8 pr-5 sm:px-6 pt-16">
         {/* Hero — minimal, elegant, quick orientation */}
         <section className="pt-8 pb-6">
           <h1 className="font-headline text-2xl sm:text-3xl tracking-tight text-on-surface leading-tight">

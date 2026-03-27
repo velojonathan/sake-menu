@@ -85,13 +85,12 @@ function PrefectureSection({ prefecture, sakes }: { prefecture: string; sakes: S
         </svg>
       </button>
       {isOpen && (
-        <div className="divide-y divide-outline-variant/15 pb-4">
+        <div className="pb-4 space-y-0">
           {sakes.map((sake) => (
             <SakeCard key={sake.id} sake={sake} />
           ))}
         </div>
       )}
-      <div className="h-px bg-outline-variant/20" />
     </div>
   );
 }

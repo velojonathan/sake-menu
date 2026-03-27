@@ -93,8 +93,6 @@ function CatalogExplorerInner({ sakes, flavorTags }: CatalogExplorerProps) {
         </div>
       </div>
 
-      <div className="h-px bg-outline-variant/20" />
-
       {/* Sake list (primary browsing experience) */}
       <SakeGrid sakes={cardData} />
 

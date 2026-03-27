@@ -63,9 +63,13 @@ export default function FilterBottomSheet({
       />
 
       {/* Sheet */}
-      <div ref={sheetRef} className="bottom-sheet animate-slide-up">
+      <div ref={sheetRef} className="bottom-sheet-glass animate-slide-up">
+        {/* Gold drag handle */}
+        <div className="flex justify-center pt-3 pb-1">
+          <div className="w-8 h-[2px] bg-tertiary-fixed-dim/60 rounded-full" />
+        </div>
         {/* Header */}
-        <div className="flex items-center justify-between px-6 pt-6 pb-4">
+        <div className="flex items-center justify-between px-6 pt-4 pb-4">
           <div>
             <h2 className="font-headline text-2xl text-on-surface">Filter Selection</h2>
             <p className="font-label text-[11px] text-outline mt-1">
@@ -83,7 +87,6 @@ export default function FilterBottomSheet({
           </button>
         </div>
 
-        <div className="h-px bg-outline-variant/20 mx-6" />
 
         {/* Content */}
         <div className="px-6 py-8 space-y-10 overflow-y-auto max-h-[60vh]">
@@ -219,7 +222,7 @@ export default function FilterBottomSheet({
         </div>
 
         {/* Footer with Reset only (auto-filtering, no Apply needed) */}
-        <div className="px-6 pb-8 pt-4 border-t border-outline-variant/10">
+        <div className="px-6 pb-8 pt-4">
           <button onClick={handleReset} className="btn-secondary w-full">
             Reset All Filters
           </button>

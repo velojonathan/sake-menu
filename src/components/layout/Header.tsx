@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 export default function Header() {
   return (
-    <header className="fixed top-0 w-full z-50 bg-surface px-6 h-16 flex items-center justify-between">
+    <header className="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-[20px] px-6 h-16 flex items-center justify-between">
       <Link href="/" className="flex items-center">
         <Image
           src="/omakase-logo.png"

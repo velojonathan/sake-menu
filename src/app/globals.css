@@ -32,9 +32,8 @@
 
   .btn-secondary {
     @apply inline-flex items-center justify-center rounded-sm
-           bg-surface-container-lowest text-tertiary px-5 py-4 font-label
+           bg-surface-container-low text-tertiary px-5 py-4 font-label
            text-[10px] uppercase tracking-[0.15em] font-bold
-           border border-tertiary/20
            transition-colors active:bg-surface-container-high
            focus:outline-none
            disabled:opacity-50 disabled:cursor-not-allowed;
@@ -104,7 +103,7 @@
 
   /* ── Sake card full (tasting menu item) ──────────── */
   .sake-card-full {
-    @apply py-8 transition-colors duration-300
+    @apply py-8 px-5 -mx-5 rounded-sm transition-colors duration-300
            active:bg-surface-container-high;
   }
 
@@ -117,6 +116,13 @@
   .bottom-sheet {
     @apply fixed bottom-0 left-0 right-0 z-50
            bg-surface rounded-t-xl
+           transition-transform duration-300 ease-out
+           max-h-[85vh] overflow-y-auto;
+  }
+
+  .bottom-sheet-glass {
+    @apply fixed bottom-0 left-0 right-0 z-50
+           bg-surface-bright/90 backdrop-blur-[20px] rounded-t-xl
            transition-transform duration-300 ease-out
            max-h-[85vh] overflow-y-auto;
   }

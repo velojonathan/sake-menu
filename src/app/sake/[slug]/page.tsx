@@ -24,7 +24,7 @@ export default async function SakeDetailPage({ params }: SakeDetailPageProps) {
   return (
     <>
       <Header />
-      <main className="max-w-2xl mx-auto px-6 pt-16">
+      <main className="max-w-2xl mx-auto pl-8 pr-5 sm:px-6 pt-16">
         {/* Back link */}
         <nav className="pt-8 mb-10">
           <Link
@@ -56,21 +56,21 @@ export default async function SakeDetailPage({ params }: SakeDetailPageProps) {
           )}
         </div>
 
-        {/* Stats row */}
-        <div className="grid grid-cols-3 gap-px bg-outline-variant/10 mb-10">
+        {/* Stats row — tonal layering, no borders */}
+        <div className="flex gap-0 mb-10">
           {sake.smv != null && (
-            <div className="bg-surface py-5 text-center">
+            <div className="flex-1 bg-surface-container-low py-5 text-center">
               <p className="label-sm text-outline mb-1">SMV</p>
               <p className="font-headline text-2xl text-on-surface">
                 {sake.smv > 0 ? `+${sake.smv}` : String(sake.smv)}
               </p>
             </div>
           )}
-          <div className="bg-surface py-5 text-center">
+          <div className="flex-1 bg-surface-container py-5 text-center">
             <p className="label-sm text-outline mb-1">Acidity</p>
             <p className="font-headline text-2xl text-on-surface">{sake.acidity}</p>
           </div>
-          <div className="bg-surface py-5 text-center">
+          <div className="flex-1 bg-surface-container-low py-5 text-center">
             <p className="label-sm text-outline mb-1">Price</p>
             <p className="font-headline text-2xl text-on-surface">{formatPrice(sake.price)}</p>
           </div>
@@ -129,7 +129,7 @@ export default async function SakeDetailPage({ params }: SakeDetailPageProps) {
               {flavorTags.map((tag) => (
                 <span
                   key={tag}
-                  className="px-4 py-2 bg-surface-container-high font-label text-[11px] uppercase tracking-wider text-on-surface-variant"
+                  className="px-4 py-2 rounded-full bg-secondary-container font-label text-[11px] uppercase tracking-wider text-on-secondary-container"
                 >
                   {tag}
                 </span>
@@ -142,21 +142,21 @@ export default async function SakeDetailPage({ params }: SakeDetailPageProps) {
         {(sake.riceType || sake.polishRatio || sake.abv) && (
           <div className="mb-10">
             <p className="label-sm text-outline mb-4">Details</p>
-            <dl className="space-y-3">
+            <dl className="space-y-0">
               {sake.riceType && (
-                <div className="flex justify-between items-baseline py-2 border-b border-outline-variant/10">
+                <div className="flex justify-between items-baseline py-3">
                   <dt className="font-label text-[10px] uppercase tracking-widest text-outline">Rice Type</dt>
                   <dd className="font-body text-sm text-on-surface">{sake.riceType}</dd>
                 </div>
               )}
               {sake.polishRatio && (
-                <div className="flex justify-between items-baseline py-2 border-b border-outline-variant/10">
+                <div className="flex justify-between items-baseline py-3 bg-surface-container-low -mx-4 px-4">
                   <dt className="font-label text-[10px] uppercase tracking-widest text-outline">Polish Ratio</dt>
                   <dd className="font-body text-sm text-on-surface">{formatPolishRatio(sake.polishRatio)}</dd>
                 </div>
               )}
               {sake.abv && (
-                <div className="flex justify-between items-baseline py-2 border-b border-outline-variant/10">
+                <div className="flex justify-between items-baseline py-3">
                   <dt className="font-label text-[10px] uppercase tracking-widest text-outline">ABV</dt>
                   <dd className="font-body text-sm text-on-surface">{sake.abv}%</dd>
                 </div>
@@ -169,7 +169,7 @@ export default async function SakeDetailPage({ params }: SakeDetailPageProps) {
         {relatedSakes.length > 0 && (
           <section className="mt-16 mb-16">
             <p className="label-sm text-outline mb-6">Similar Expressions</p>
-            <div className="divide-y divide-outline-variant/10">
+            <div className="space-y-0">
               {relatedSakes.map((related) => (
                 <SakeCard key={related.id} sake={toCardData(related)} compact />
               ))}
