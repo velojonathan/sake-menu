@@ -212,7 +212,7 @@ const sakeData: SakeSeed[] = [
     brewery: 'Takara Shuzo',
     region: 'Kyoto',
     description: 'Light and bubbly sparkling sake with low alcohol. Refreshing sweetness with hints of peach and muscat grape. Perfect aperitif.',
-    smv: -70,
+    smv: -15,
     acidity: 1.0,
     price: 12,
     style: 'Sparkling',

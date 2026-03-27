@@ -9,7 +9,6 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  Cell,
 } from 'recharts';
 import Link from 'next/link';
 import { ChartPoint } from '@/domain/catalog/types';
@@ -21,6 +20,12 @@ interface SakeChartProps {
 
 interface TooltipPayloadItem {
   payload: ChartPoint;
+}
+
+interface CustomDotProps {
+  cx?: number;
+  cy?: number;
+  payload?: ChartPoint;
 }
 
 export default function SakeChart({ data }: SakeChartProps) {
@@ -49,6 +54,24 @@ export default function SakeChart({ data }: SakeChartProps) {
         </div>
         <p className="text-xs font-semibold text-sake-800 mt-1">{formatPrice(sake.price)}</p>
       </div>
+    );
+  };
+
+  const renderDot = (props: CustomDotProps) => {
+    const { cx, cy, payload } = props;
+    if (cx == null || cy == null || !payload) return null;
+    const isActive = activePoint?.id === payload.id;
+    return (
+      <circle
+        key={payload.id}
+        cx={cx}
+        cy={cy}
+        r={isActive ? 8 : 5}
+        fill={isActive ? '#6f533f' : '#b08e65'}
+        stroke={isActive ? '#30231b' : '#886548'}
+        strokeWidth={isActive ? 2 : 1}
+        cursor="pointer"
+      />
     );
   };
 
@@ -106,21 +129,11 @@ export default function SakeChart({ data }: SakeChartProps) {
           <Tooltip content={<CustomTooltip />} />
           <Scatter
             data={data}
+            shape={renderDot}
             onClick={(entry: { payload?: ChartPoint }) => {
               if (entry?.payload) handleClick(entry.payload);
             }}
-          >
-            {data.map((entry) => (
-              <Cell
-                key={entry.id}
-                fill={activePoint?.id === entry.id ? '#6f533f' : '#b08e65'}
-                stroke={activePoint?.id === entry.id ? '#30231b' : '#886548'}
-                strokeWidth={activePoint?.id === entry.id ? 2 : 1}
-                r={activePoint?.id === entry.id ? 8 : 5}
-                cursor="pointer"
-              />
-            ))}
-          </Scatter>
+          />
         </ScatterChart>
       </ResponsiveContainer>
 
