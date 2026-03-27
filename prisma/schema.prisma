@@ -1,0 +1,115 @@
+// Prisma schema for Sake Menu MVP
+// Designed for current catalog features + future inventory expansion
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Catalog Domain ──────────────────────────────────────────────
+
+model Sake {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  brewery     String
+  region      String?
+  description String
+  imageUrl    String?
+  smv         Float?   // Sake Meter Value (nihonshu-do) — null if unknown
+  acidity     Float
+  price       Float?   // Price per serving — null if market price / inquire
+  riceType    String?
+  polishRatio Float?   // Seimaibuai percentage
+  style       String?  // e.g. Junmai, Daiginjo, Nigori, etc.
+  abv         Float?   // Alcohol by volume
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  flavorTags     SakeFlavorTag[]
+  inventoryItems InventoryItem[]
+
+  @@index([smv])
+  @@index([acidity])
+  @@index([price])
+  @@index([brewery])
+}
+
+model FlavorTag {
+  id    String @id @default(cuid())
+  name  String @unique
+  sakes SakeFlavorTag[]
+}
+
+model SakeFlavorTag {
+  sakeId    String
+  flavorTagId String
+
+  sake      Sake      @relation(fields: [sakeId], references: [id], onDelete: Cascade)
+  flavorTag FlavorTag @relation(fields: [flavorTagId], references: [id], onDelete: Cascade)
+
+  @@id([sakeId, flavorTagId])
+}
+
+// ─── Inventory Domain (scaffolded for Phase 2) ──────────────────
+
+model InventoryItem {
+  id               String   @id @default(cuid())
+  sakeId           String?
+  sku              String   @unique
+  bottleSize       String   // e.g. "720ml", "1.8L"
+  currentQuantity  Int      @default(0)
+  reorderThreshold Int      @default(5)
+  location         String?  // e.g. "Walk-in cooler", "Shelf A"
+  updatedAt        DateTime @updatedAt
+
+  sake             Sake?    @relation(fields: [sakeId], references: [id])
+  invoiceLineItems InvoiceLineItem[]
+
+  @@index([sakeId])
+}
+
+model Invoice {
+  id            String   @id @default(cuid())
+  vendorName    String
+  invoiceNumber String
+  invoiceDate   DateTime
+  totalAmount   Float
+  status        String   @default("pending") // pending, processed, verified
+  rawFileUrl    String?
+  createdAt     DateTime @default(now())
+
+  lineItems     InvoiceLineItem[]
+
+  @@index([vendorName])
+  @@index([status])
+}
+
+model InvoiceLineItem {
+  id              String  @id @default(cuid())
+  invoiceId       String
+  inventoryItemId String?
+  description     String
+  quantity        Int
+  unitCost        Float
+  lineTotal       Float
+
+  invoice         Invoice        @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  inventoryItem   InventoryItem? @relation(fields: [inventoryItemId], references: [id])
+
+  @@index([invoiceId])
+}
+
+model ShelfScan {
+  id        String   @id @default(cuid())
+  imageUrl  String
+  scannedAt DateTime @default(now())
+  status    String   @default("pending") // pending, processing, completed, failed
+  notes     String?
+
+  @@index([status])
+}
