@@ -22,6 +22,12 @@ export default function AdminLayout({
                 >
                   Sake Catalog
                 </Link>
+                <Link
+                  href="/admin/flavors"
+                  className="text-sm text-gray-300 hover:text-white transition-colors"
+                >
+                  Flavor Tags
+                </Link>
               </nav>
             </div>
             <Link

@@ -122,3 +122,48 @@ async function ensureFlavorTags(names: string[]): Promise<string[]> {
 
   return ids;
 }
+
+// ─── FlavorTag CRUD ─────────────────────────────────────────────
+
+/** Create a new flavor tag */
+export async function createFlavorTag(name: string) {
+  const normalized = name.trim().toLowerCase();
+  if (!normalized) throw new Error('Tag name is required');
+
+  const existing = await prisma.flavorTag.findUnique({ where: { name: normalized } });
+  if (existing) throw new Error(`Tag "${normalized}" already exists`);
+
+  const tag = await prisma.flavorTag.create({ data: { name: normalized } });
+
+  revalidatePath('/admin/flavors');
+  revalidatePath('/');
+  return tag;
+}
+
+/** Rename a flavor tag */
+export async function updateFlavorTag(id: string, name: string) {
+  const normalized = name.trim().toLowerCase();
+  if (!normalized) throw new Error('Tag name is required');
+
+  const existing = await prisma.flavorTag.findFirst({
+    where: { name: normalized, NOT: { id } },
+  });
+  if (existing) throw new Error(`Tag "${normalized}" already exists`);
+
+  const tag = await prisma.flavorTag.update({
+    where: { id },
+    data: { name: normalized },
+  });
+
+  revalidatePath('/admin/flavors');
+  revalidatePath('/');
+  return tag;
+}
+
+/** Delete a flavor tag (removes associations too via cascade) */
+export async function deleteFlavorTag(id: string) {
+  await prisma.flavorTag.delete({ where: { id } });
+
+  revalidatePath('/admin/flavors');
+  revalidatePath('/');
+}

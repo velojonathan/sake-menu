@@ -25,6 +25,7 @@ interface SakeFormData {
 interface SakeFormProps {
   initialData?: SakeFormData;
   sakeId?: string;
+  availableFlavors?: string[];
 }
 
 const defaultFormData: SakeFormData = {
@@ -43,7 +44,8 @@ const defaultFormData: SakeFormData = {
   flavorTagNames: [],
 };
 
-export default function SakeForm({ initialData, sakeId }: SakeFormProps) {
+export default function SakeForm({ initialData, sakeId, availableFlavors }: SakeFormProps) {
+  const flavorOptions = availableFlavors ?? [...FLAVOR_TAGS];
   const router = useRouter();
   const [formData, setFormData] = useState<SakeFormData>(initialData || defaultFormData);
   const [saving, setSaving] = useState(false);
@@ -279,7 +281,7 @@ export default function SakeForm({ initialData, sakeId }: SakeFormProps) {
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">Flavor Profile</label>
         <div className="flex flex-wrap gap-2">
-          {FLAVOR_TAGS.map((flavor) => {
+          {flavorOptions.map((flavor) => {
             const isSelected = formData.flavorTagNames.includes(flavor);
             return (
               <button

@@ -25,8 +25,8 @@ export default async function AdminDashboard() {
           title="Flavor Tags"
           count={tagCount}
           description="Unique flavor profiles"
-          href="/admin/sake"
-          action="View"
+          href="/admin/flavors"
+          action="Manage"
         />
         <div className="bg-white rounded-xl border border-gray-200 p-6 opacity-50">
           <h3 className="font-semibold text-gray-900">Inventory</h3>

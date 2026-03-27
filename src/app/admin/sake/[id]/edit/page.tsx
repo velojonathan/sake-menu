@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import { prisma } from '@/lib/db';
 import SakeForm from '@/components/admin/SakeForm';
+import { getAllFlavorTags } from '@/domain/catalog/queries';
 
 interface EditSakePageProps {
   params: { id: string };
@@ -19,6 +20,8 @@ export default async function EditSakePage({ params }: EditSakePageProps) {
   if (!sake) {
     notFound();
   }
+
+  const flavors = await getAllFlavorTags();
 
   const initialData = {
     name: sake.name,
@@ -39,7 +42,7 @@ export default async function EditSakePage({ params }: EditSakePageProps) {
   return (
     <div>
       <h1 className="text-2xl font-bold text-gray-900 mb-6">Edit: {sake.name}</h1>
-      <SakeForm initialData={initialData} sakeId={sake.id} />
+      <SakeForm initialData={initialData} sakeId={sake.id} availableFlavors={flavors} />
     </div>
   );
 }
