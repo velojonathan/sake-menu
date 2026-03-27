@@ -51,30 +51,30 @@ export default function FilterPanel({
         className="w-full flex items-center justify-between sm:hidden"
         aria-expanded={isExpanded}
       >
-        <span className="font-medium text-sm text-charcoal flex items-center gap-2">
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+        <span className="font-medium text-sm text-on-surface flex items-center gap-2">
+          <svg className="w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" />
           </svg>
           Filters
           {hasActiveFilters && (
-            <span className="bg-sake-700 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+            <span className="bg-secondary text-on-secondary text-xs rounded-full w-5 h-5 flex items-center justify-center">
               !
             </span>
           )}
         </span>
         <svg
-          className={cn('w-5 h-5 transition-transform', isExpanded && 'rotate-180')}
-          fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"
+          className={cn('w-4 h-4 text-primary transition-transform', isExpanded && 'rotate-180')}
+          fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor"
         >
           <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
         </svg>
       </button>
 
       {/* Filter content */}
-      <div className={cn('mt-4 sm:mt-0 space-y-5', !isExpanded && 'hidden sm:block')}>
+      <div className={cn('mt-6 sm:mt-0 space-y-8', !isExpanded && 'hidden sm:block')}>
         {/* SMV Range */}
         <div>
-          <label className="block text-xs font-medium text-sake-600 mb-2">
+          <label className="label-sm mb-3 block">
             SMV (Sake Meter Value): {filters.smvMin ?? FILTER_DEFAULTS.smvMin} to{' '}
             {filters.smvMax ?? FILTER_DEFAULTS.smvMax}
           </label>
@@ -100,7 +100,7 @@ export default function FilterPanel({
               aria-label="Maximum SMV"
             />
           </div>
-          <div className="flex justify-between text-xs text-sake-400 mt-1">
+          <div className="flex justify-between text-xs text-on-surface-variant/50 mt-2">
             <span>Sweet ({FILTER_DEFAULTS.smvMin})</span>
             <span>Dry (+{FILTER_DEFAULTS.smvMax})</span>
           </div>
@@ -108,7 +108,7 @@ export default function FilterPanel({
 
         {/* Acidity Range */}
         <div>
-          <label className="block text-xs font-medium text-sake-600 mb-2">
+          <label className="label-sm mb-3 block">
             Acidity: {filters.acidityMin ?? FILTER_DEFAULTS.acidityMin} to{' '}
             {filters.acidityMax ?? FILTER_DEFAULTS.acidityMax}
           </label>
@@ -134,7 +134,7 @@ export default function FilterPanel({
               aria-label="Maximum acidity"
             />
           </div>
-          <div className="flex justify-between text-xs text-sake-400 mt-1">
+          <div className="flex justify-between text-xs text-on-surface-variant/50 mt-2">
             <span>Mild ({FILTER_DEFAULTS.acidityMin})</span>
             <span>Sharp ({FILTER_DEFAULTS.acidityMax})</span>
           </div>
@@ -142,7 +142,7 @@ export default function FilterPanel({
 
         {/* Price Range */}
         <div>
-          <label className="block text-xs font-medium text-sake-600 mb-2">
+          <label className="label-sm mb-3 block">
             Price: ${filters.priceMin ?? FILTER_DEFAULTS.priceMin} &ndash; $
             {filters.priceMax ?? FILTER_DEFAULTS.priceMax}
           </label>
@@ -172,7 +172,7 @@ export default function FilterPanel({
 
         {/* Flavor Tags */}
         <div>
-          <label className="block text-xs font-medium text-sake-600 mb-2">
+          <label className="label-sm mb-3 block">
             Flavor Profile
           </label>
           <div className="flex flex-wrap gap-2">
@@ -183,10 +183,10 @@ export default function FilterPanel({
                   key={flavor}
                   onClick={() => toggleFlavor(flavor)}
                   className={cn(
-                    'badge transition-colors capitalize',
+                    'rounded-full px-3 py-1.5 text-xs font-medium transition-colors capitalize',
                     isSelected
-                      ? 'bg-sake-700 text-white'
-                      : 'bg-sake-50 text-sake-600 hover:bg-sake-100'
+                      ? 'bg-secondary text-on-secondary'
+                      : 'bg-secondary-container text-secondary-on-container hover:brightness-95'
                   )}
                 >
                   {flavor}
@@ -200,7 +200,7 @@ export default function FilterPanel({
         {hasActiveFilters && (
           <button
             onClick={clearFilters}
-            className="text-xs text-sake-500 hover:text-sake-700 underline"
+            className="btn-tertiary text-xs"
           >
             Clear all filters
           </button>

@@ -25,7 +25,7 @@ function CatalogExplorerInner({ sakes, flavorTags }: CatalogExplorerProps) {
   } = useFilters(sakes);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-10">
       {/* Search */}
       <SearchBar value={filters.search || ''} onChange={setSearch} />
 
@@ -38,10 +38,10 @@ function CatalogExplorerInner({ sakes, flavorTags }: CatalogExplorerProps) {
 
       {/* Results count */}
       <div className="flex items-center justify-between">
-        <p className="text-sm text-sake-500">
+        <p className="body-md">
           Showing{' '}
-          <span className="font-semibold text-charcoal">{filteredCount}</span> of{' '}
-          <span className="font-semibold text-charcoal">{totalCount}</span> sakes
+          <span className="font-semibold text-on-surface">{filteredCount}</span> of{' '}
+          <span className="font-semibold text-on-surface">{totalCount}</span> sakes
         </p>
       </div>
 
@@ -66,13 +66,13 @@ export default function CatalogExplorer(props: CatalogExplorerProps) {
 
 function CatalogSkeleton() {
   return (
-    <div className="space-y-6">
-      <div className="skeleton h-12 rounded-lg" />
-      <div className="skeleton h-48 rounded-xl" />
-      <div className="skeleton h-72 rounded-xl" />
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+    <div className="space-y-10">
+      <div className="skeleton h-12 rounded-sm" />
+      <div className="skeleton h-48 rounded-sm" />
+      <div className="skeleton h-72 rounded-sm" />
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
         {Array.from({ length: 6 }).map((_, i) => (
-          <div key={i} className="skeleton h-32 rounded-xl" />
+          <div key={i} className="skeleton h-32 rounded-sm" />
         ))}
       </div>
     </div>

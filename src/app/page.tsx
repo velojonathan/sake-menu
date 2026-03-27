@@ -14,13 +14,13 @@ export default async function HomePage() {
   return (
     <>
       <Header />
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Hero */}
-        <section className="py-8 sm:py-12 text-center">
-          <h1 className="text-3xl sm:text-4xl font-bold text-charcoal tracking-tight">
+      <main className="max-w-7xl mx-auto px-8 sm:px-10 lg:px-12">
+        {/* Hero — asymmetrical editorial spacing */}
+        <section className="pt-16 pb-10 sm:pt-20 sm:pb-14">
+          <h1 className="display-lg">
             Explore Our Sake Collection
           </h1>
-          <p className="mt-3 text-base sm:text-lg text-sake-500 max-w-2xl mx-auto">
+          <p className="mt-4 text-base sm:text-lg text-on-surface-variant max-w-xl">
             Discover the perfect sake for your palate. Browse by flavor profile,
             sweetness, acidity, and more.
           </p>

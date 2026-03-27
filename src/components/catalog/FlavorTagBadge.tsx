@@ -17,9 +17,9 @@ export default function FlavorTagBadge({
 }: FlavorTagBadgeProps) {
   const baseClasses = cn(
     'badge-flavor capitalize',
-    size === 'md' && 'px-3 py-1 text-sm',
+    size === 'md' && 'px-3 py-1.5 text-sm',
     interactive && 'cursor-pointer transition-colors',
-    selected && 'bg-sake-700 text-white'
+    selected && 'bg-secondary text-on-secondary'
   );
 
   if (interactive) {
