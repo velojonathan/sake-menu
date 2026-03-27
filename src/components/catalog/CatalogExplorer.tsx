@@ -60,42 +60,50 @@ function CatalogExplorerInner({ sakes, flavorTags }: CatalogExplorerProps) {
         </button>
       </div>
 
-      {/* Filter bottom sheet */}
+      {/* Filter bottom sheet (auto-filtering, no Apply button) */}
       <FilterBottomSheet
         isOpen={showFilters}
         onClose={() => setShowFilters(false)}
         filters={filters}
-        onApply={setFilters}
+        onChange={setFilters}
+        filteredCount={filteredCount}
         availableFlavors={flavorTags}
       />
 
       {/* Results count + clear */}
-      <div className="flex items-center justify-between">
-        <p className="label-sm text-outline">
-          {filteredCount} selection{filteredCount !== 1 ? 's' : ''}
+      <div className="flex items-baseline justify-between">
+        <p className="font-headline text-xl italic text-on-surface">
+          The Selection
         </p>
-        {activeFilterCount > 0 && (
-          <button
-            onClick={() => {
-              setFilters({});
-              setSearch('');
-            }}
-            className="label-sm text-tertiary hover:text-tertiary-container transition-colors"
-          >
-            Clear All
-          </button>
-        )}
+        <div className="flex items-center gap-4">
+          <span className="label-sm text-outline/60">
+            {filteredCount} selection{filteredCount !== 1 ? 's' : ''} found
+          </span>
+          {activeFilterCount > 0 && (
+            <button
+              onClick={() => {
+                setFilters({});
+                setSearch('');
+              }}
+              className="label-sm text-tertiary hover:text-tertiary-container transition-colors"
+            >
+              Clear All
+            </button>
+          )}
+        </div>
       </div>
 
-      {/* Chart (toggleable, secondary) */}
+      <div className="h-px bg-outline-variant/20" />
+
+      {/* Sake list (primary browsing experience) */}
+      <SakeGrid sakes={cardData} />
+
+      {/* Chart (secondary, below list) */}
       {showChart && (
-        <div id="discovery">
+        <div id="discovery" className="mt-12">
           <SakeChart data={chartData} />
         </div>
       )}
-
-      {/* Sake list (primary) */}
-      <SakeGrid sakes={cardData} />
     </div>
   );
 }
@@ -115,7 +123,7 @@ function CatalogSkeleton() {
       <div className="skeleton h-10 rounded-sm w-48" />
       <div className="space-y-6">
         {Array.from({ length: 8 }).map((_, i) => (
-          <div key={i} className="skeleton h-16 rounded-sm" />
+          <div key={i} className="skeleton h-24 rounded-sm" />
         ))}
       </div>
     </div>

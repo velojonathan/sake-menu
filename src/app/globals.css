@@ -95,10 +95,16 @@
     @apply font-label text-[10px] uppercase tracking-[0.2em] text-outline;
   }
 
-  /* ── Sake card (tasting menu item) ─────────────────── */
+  /* ── Sake card compact (related sakes, etc.) ────────── */
   .sake-card {
     @apply py-5 flex justify-between items-start gap-4
            transition-colors duration-300
+           active:bg-surface-container-high;
+  }
+
+  /* ── Sake card full (tasting menu item) ──────────── */
+  .sake-card-full {
+    @apply py-8 transition-colors duration-300
            active:bg-surface-container-high;
   }
 

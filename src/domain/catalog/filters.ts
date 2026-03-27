@@ -53,9 +53,12 @@ export function toCardData(sake: SakeWithTags): SakeCardData {
     slug: sake.slug,
     name: sake.name,
     brewery: sake.brewery,
+    region: sake.region,
+    description: sake.description,
     smv: sake.smv,
     acidity: sake.acidity,
     price: sake.price,
+    polishRatio: sake.polishRatio,
     style: sake.style,
     flavorTags: sake.flavorTags.map((ft) => ft.flavorTag.name),
   };

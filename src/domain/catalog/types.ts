@@ -30,9 +30,12 @@ export interface SakeCardData {
   slug: string;
   name: string;
   brewery: string;
+  region: string | null;
+  description: string;
   smv: number | null;
   acidity: number;
   price: number | null;
+  polishRatio: number | null;
   style: string | null;
   flavorTags: string[];
 }

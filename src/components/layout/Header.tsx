@@ -1,15 +1,18 @@
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Header() {
   return (
     <header className="fixed top-0 w-full z-50 bg-surface px-6 h-16 flex items-center justify-between">
-      <Link href="/" className="flex items-center gap-2">
-        <span className="font-headline tracking-display text-sm uppercase text-primary">
-          OMA
-        </span>
-        <span className="font-headline tracking-display text-sm uppercase text-primary">
-          KASE
-        </span>
+      <Link href="/" className="flex items-center">
+        <Image
+          src="/omakase-logo.png"
+          alt="OMAKASE"
+          width={120}
+          height={32}
+          className="h-7 w-auto object-contain"
+          priority
+        />
       </Link>
       <div className="flex items-center gap-4">
         <Link

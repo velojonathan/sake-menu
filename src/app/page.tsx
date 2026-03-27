@@ -15,15 +15,13 @@ export default async function HomePage() {
     <>
       <Header />
       <main className="max-w-2xl mx-auto px-6 pt-16">
-        {/* Hero — minimal, refined */}
-        <section className="pt-12 pb-8">
-          <p className="label-sm text-outline mb-3">Curated Selection</p>
-          <h1 className="font-headline text-3xl sm:text-4xl font-bold tracking-tight text-on-surface leading-tight">
-            Discover the<br />Soul of Rice
+        {/* Hero — minimal, elegant, quick orientation */}
+        <section className="pt-8 pb-6">
+          <h1 className="font-headline text-2xl sm:text-3xl tracking-tight text-on-surface leading-tight">
+            The Selection
           </h1>
-          <p className="mt-4 font-body text-sm text-on-surface-variant max-w-md leading-relaxed">
-            A guided journey through Japan&apos;s finest expressions.
-            Explore by flavor, sweetness, acidity, and more.
+          <p className="mt-2 font-body text-sm text-on-surface-variant leading-relaxed">
+            A curated journey through Japan&apos;s finest sake, organized by prefecture.
           </p>
         </section>
 

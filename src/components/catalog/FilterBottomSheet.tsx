@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useEffect, useCallback, useRef } from 'react';
 import { SakeFilters } from '@/domain/catalog/types';
 import { FILTER_DEFAULTS } from '@/lib/constants';
 import { cn } from '@/lib/utils';
@@ -9,7 +9,8 @@ interface FilterBottomSheetProps {
   isOpen: boolean;
   onClose: () => void;
   filters: SakeFilters;
-  onApply: (filters: SakeFilters) => void;
+  onChange: (filters: SakeFilters) => void;
+  filteredCount: number;
   availableFlavors: string[];
 }
 
@@ -17,14 +18,14 @@ export default function FilterBottomSheet({
   isOpen,
   onClose,
   filters,
-  onApply,
+  onChange,
+  filteredCount,
   availableFlavors,
 }: FilterBottomSheetProps) {
-  const [draft, setDraft] = useState<SakeFilters>(filters);
+  const sheetRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (isOpen) {
-      setDraft(filters);
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
@@ -32,37 +33,23 @@ export default function FilterBottomSheet({
     return () => {
       document.body.style.overflow = '';
     };
-  }, [isOpen, filters]);
+  }, [isOpen]);
 
-  const updateDraft = useCallback((key: keyof SakeFilters, value: unknown) => {
-    setDraft((prev) => ({ ...prev, [key]: value }));
-  }, []);
+  const updateFilter = useCallback((key: keyof SakeFilters, value: unknown) => {
+    onChange({ ...filters, [key]: value });
+  }, [filters, onChange]);
 
   const toggleFlavor = useCallback((flavor: string) => {
-    setDraft((prev) => {
-      const current = prev.flavors || [];
-      const updated = current.includes(flavor)
-        ? current.filter((f) => f !== flavor)
-        : [...current, flavor];
-      return { ...prev, flavors: updated.length > 0 ? updated : undefined };
-    });
-  }, []);
+    const current = filters.flavors || [];
+    const updated = current.includes(flavor)
+      ? current.filter((f) => f !== flavor)
+      : [...current, flavor];
+    onChange({ ...filters, flavors: updated.length > 0 ? updated : undefined });
+  }, [filters, onChange]);
 
   const handleReset = () => {
-    setDraft({});
+    onChange({});
   };
-
-  const handleApply = () => {
-    onApply(draft);
-    onClose();
-  };
-
-  const activeCount = [
-    draft.smvMin !== undefined || draft.smvMax !== undefined,
-    draft.acidityMin !== undefined || draft.acidityMax !== undefined,
-    draft.priceMin !== undefined || draft.priceMax !== undefined,
-    draft.flavors && draft.flavors.length > 0,
-  ].filter(Boolean).length;
 
   if (!isOpen) return null;
 
@@ -76,10 +63,15 @@ export default function FilterBottomSheet({
       />
 
       {/* Sheet */}
-      <div className="bottom-sheet animate-slide-up">
+      <div ref={sheetRef} className="bottom-sheet animate-slide-up">
         {/* Header */}
         <div className="flex items-center justify-between px-6 pt-6 pb-4">
-          <h2 className="font-headline text-2xl text-on-surface">Filter Selection</h2>
+          <div>
+            <h2 className="font-headline text-2xl text-on-surface">Filter Selection</h2>
+            <p className="font-label text-[11px] text-outline mt-1">
+              {filteredCount} selection{filteredCount !== 1 ? 's' : ''} match
+            </p>
+          </div>
           <button
             onClick={onClose}
             className="hover:opacity-70 transition-opacity active:scale-95"
@@ -103,13 +95,13 @@ export default function FilterBottomSheet({
             </div>
             <div className="flex flex-wrap gap-2">
               {availableFlavors.map((flavor) => {
-                const isSelected = draft.flavors?.includes(flavor);
+                const isSelected = filters.flavors?.includes(flavor);
                 return (
                   <button
                     key={flavor}
                     onClick={() => toggleFlavor(flavor)}
                     className={cn(
-                      'px-4 py-2 rounded-sm font-label text-[11px] uppercase tracking-wider transition-colors',
+                      'px-4 py-2 rounded-full font-label text-[11px] uppercase tracking-wider transition-colors',
                       isSelected
                         ? 'bg-secondary text-on-secondary'
                         : 'bg-surface-container-high text-on-surface-variant hover:bg-surface-container-highest'
@@ -127,7 +119,7 @@ export default function FilterBottomSheet({
             <div className="flex items-center justify-between mb-4">
               <span className="label-sm">Price Point</span>
               <span className="font-headline text-lg text-on-surface">
-                ${draft.priceMin ?? FILTER_DEFAULTS.priceMin} &mdash; ${draft.priceMax ?? FILTER_DEFAULTS.priceMax}
+                ${filters.priceMin ?? FILTER_DEFAULTS.priceMin} &mdash; ${filters.priceMax ?? FILTER_DEFAULTS.priceMax}
               </span>
             </div>
             <div className="flex gap-3 items-center">
@@ -136,8 +128,8 @@ export default function FilterBottomSheet({
                 min={FILTER_DEFAULTS.priceMin}
                 max={FILTER_DEFAULTS.priceMax}
                 step={5}
-                value={draft.priceMin ?? FILTER_DEFAULTS.priceMin}
-                onChange={(e) => updateDraft('priceMin', parseFloat(e.target.value))}
+                value={filters.priceMin ?? FILTER_DEFAULTS.priceMin}
+                onChange={(e) => updateFilter('priceMin', parseFloat(e.target.value))}
                 className="flex-1"
                 aria-label="Minimum price"
               />
@@ -146,8 +138,8 @@ export default function FilterBottomSheet({
                 min={FILTER_DEFAULTS.priceMin}
                 max={FILTER_DEFAULTS.priceMax}
                 step={5}
-                value={draft.priceMax ?? FILTER_DEFAULTS.priceMax}
-                onChange={(e) => updateDraft('priceMax', parseFloat(e.target.value))}
+                value={filters.priceMax ?? FILTER_DEFAULTS.priceMax}
+                onChange={(e) => updateFilter('priceMax', parseFloat(e.target.value))}
                 className="flex-1"
                 aria-label="Maximum price"
               />
@@ -159,9 +151,9 @@ export default function FilterBottomSheet({
             <div className="flex items-center justify-between mb-4">
               <span className="label-sm">Sake Meter Value (SMV)</span>
               <span className="font-headline text-lg text-on-surface">
-                {(draft.smvMin ?? FILTER_DEFAULTS.smvMin) > 0 ? '+' : ''}{draft.smvMin ?? FILTER_DEFAULTS.smvMin}
+                {(filters.smvMin ?? FILTER_DEFAULTS.smvMin) > 0 ? '+' : ''}{filters.smvMin ?? FILTER_DEFAULTS.smvMin}
                 {' '}&mdash;{' '}
-                {(draft.smvMax ?? FILTER_DEFAULTS.smvMax) > 0 ? '+' : ''}{draft.smvMax ?? FILTER_DEFAULTS.smvMax}
+                {(filters.smvMax ?? FILTER_DEFAULTS.smvMax) > 0 ? '+' : ''}{filters.smvMax ?? FILTER_DEFAULTS.smvMax}
               </span>
             </div>
             <div className="flex gap-3 items-center">
@@ -170,8 +162,8 @@ export default function FilterBottomSheet({
                 min={FILTER_DEFAULTS.smvMin}
                 max={FILTER_DEFAULTS.smvMax}
                 step={1}
-                value={draft.smvMin ?? FILTER_DEFAULTS.smvMin}
-                onChange={(e) => updateDraft('smvMin', parseFloat(e.target.value))}
+                value={filters.smvMin ?? FILTER_DEFAULTS.smvMin}
+                onChange={(e) => updateFilter('smvMin', parseFloat(e.target.value))}
                 className="flex-1"
                 aria-label="Minimum SMV"
               />
@@ -180,8 +172,8 @@ export default function FilterBottomSheet({
                 min={FILTER_DEFAULTS.smvMin}
                 max={FILTER_DEFAULTS.smvMax}
                 step={1}
-                value={draft.smvMax ?? FILTER_DEFAULTS.smvMax}
-                onChange={(e) => updateDraft('smvMax', parseFloat(e.target.value))}
+                value={filters.smvMax ?? FILTER_DEFAULTS.smvMax}
+                onChange={(e) => updateFilter('smvMax', parseFloat(e.target.value))}
                 className="flex-1"
                 aria-label="Maximum SMV"
               />
@@ -198,7 +190,7 @@ export default function FilterBottomSheet({
             <div className="flex items-center justify-between mb-4">
               <span className="label-sm">Acidity Level</span>
               <span className="font-headline text-lg text-on-surface">
-                {draft.acidityMin ?? FILTER_DEFAULTS.acidityMin} &mdash; {draft.acidityMax ?? FILTER_DEFAULTS.acidityMax}
+                {filters.acidityMin ?? FILTER_DEFAULTS.acidityMin} &mdash; {filters.acidityMax ?? FILTER_DEFAULTS.acidityMax}
               </span>
             </div>
             <div className="flex gap-3 items-center">
@@ -207,8 +199,8 @@ export default function FilterBottomSheet({
                 min={FILTER_DEFAULTS.acidityMin}
                 max={FILTER_DEFAULTS.acidityMax}
                 step={0.1}
-                value={draft.acidityMin ?? FILTER_DEFAULTS.acidityMin}
-                onChange={(e) => updateDraft('acidityMin', parseFloat(e.target.value))}
+                value={filters.acidityMin ?? FILTER_DEFAULTS.acidityMin}
+                onChange={(e) => updateFilter('acidityMin', parseFloat(e.target.value))}
                 className="flex-1"
                 aria-label="Minimum acidity"
               />
@@ -217,8 +209,8 @@ export default function FilterBottomSheet({
                 min={FILTER_DEFAULTS.acidityMin}
                 max={FILTER_DEFAULTS.acidityMax}
                 step={0.1}
-                value={draft.acidityMax ?? FILTER_DEFAULTS.acidityMax}
-                onChange={(e) => updateDraft('acidityMax', parseFloat(e.target.value))}
+                value={filters.acidityMax ?? FILTER_DEFAULTS.acidityMax}
+                onChange={(e) => updateFilter('acidityMax', parseFloat(e.target.value))}
                 className="flex-1"
                 aria-label="Maximum acidity"
               />
@@ -226,16 +218,11 @@ export default function FilterBottomSheet({
           </div>
         </div>
 
-        {/* Footer with Reset / Apply */}
+        {/* Footer with Reset only (auto-filtering, no Apply needed) */}
         <div className="px-6 pb-8 pt-4 border-t border-outline-variant/10">
-          <div className="grid grid-cols-2 gap-3">
-            <button onClick={handleReset} className="btn-secondary">
-              Reset
-            </button>
-            <button onClick={handleApply} className="btn-primary">
-              Apply Filters{activeCount > 0 ? ` (${activeCount})` : ''}
-            </button>
-          </div>
+          <button onClick={handleReset} className="btn-secondary w-full">
+            Reset All Filters
+          </button>
         </div>
       </div>
     </>

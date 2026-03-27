@@ -47,8 +47,13 @@ export default async function SakeDetailPage({ params }: SakeDetailPageProps) {
             {sake.name}
           </h1>
           <p className="font-body text-sm text-on-surface-variant mt-2">
-            {sake.brewery}{sake.region ? ` \u2022 ${sake.region}` : ''}
+            {sake.brewery}
           </p>
+          {sake.region && (
+            <p className="font-label text-[10px] uppercase tracking-widest text-outline mt-1">
+              {sake.region} Prefecture
+            </p>
+          )}
         </div>
 
         {/* Stats row */}
@@ -166,7 +171,7 @@ export default async function SakeDetailPage({ params }: SakeDetailPageProps) {
             <p className="label-sm text-outline mb-6">Similar Expressions</p>
             <div className="divide-y divide-outline-variant/10">
               {relatedSakes.map((related) => (
-                <SakeCard key={related.id} sake={toCardData(related)} />
+                <SakeCard key={related.id} sake={toCardData(related)} compact />
               ))}
             </div>
           </section>

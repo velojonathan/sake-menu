@@ -125,10 +125,10 @@ export default function SakeChart({ data }: SakeChartProps) {
         </ScatterChart>
       </ResponsiveContainer>
 
-      {/* Axis labels */}
+      {/* Axis labels — negative SMV = sweet (left), positive SMV = dry (right) */}
       <div className="flex justify-between mt-1 px-8">
-        <span className="label-sm text-outline/60">Sweet (Dry)</span>
-        <span className="label-sm text-outline/60">Dry (Sweet)</span>
+        <span className="label-sm text-outline/60">&larr; Sweet</span>
+        <span className="label-sm text-outline/60">Dry &rarr;</span>
       </div>
 
       {/* Active point detail card */}
