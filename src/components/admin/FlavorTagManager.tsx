@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createFlavorTag, updateFlavorTag, deleteFlavorTag } from '@/domain/admin/actions';
 
@@ -16,20 +16,22 @@ interface FlavorTagManagerProps {
 
 export default function FlavorTagManager({ tags }: FlavorTagManagerProps) {
   const router = useRouter();
-  const [newTagName, setNewTagName] = useState('');
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editName, setEditName] = useState('');
+  const createInputRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
 
-  const handleCreate = async (e: React.FormEvent) => {
+  const handleCreate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!newTagName.trim()) return;
+    const formData = new FormData(e.currentTarget);
+    const value = (formData.get('tagName') as string ?? '').trim();
+    if (!value) return;
     setSaving(true);
     setError(null);
     try {
-      await createFlavorTag(newTagName);
-      setNewTagName('');
+      await createFlavorTag(value);
+      if (createInputRef.current) createInputRef.current.value = '';
       router.refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to create tag');
@@ -100,9 +102,9 @@ export default function FlavorTagManager({ tags }: FlavorTagManagerProps) {
             Add New Flavor Tag
           </label>
           <input
+            ref={createInputRef}
             type="text"
-            value={newTagName}
-            onChange={(e) => setNewTagName(e.target.value)}
+            name="tagName"
             className="input-field"
             placeholder="e.g. spicy, mineral, tangy"
             disabled={saving}
@@ -110,7 +112,7 @@ export default function FlavorTagManager({ tags }: FlavorTagManagerProps) {
         </div>
         <button
           type="submit"
-          disabled={saving || !newTagName.trim()}
+          disabled={saving}
           className="btn-primary whitespace-nowrap"
         >
           {saving ? 'Adding...' : '+ Add Tag'}
