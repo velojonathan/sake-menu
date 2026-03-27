@@ -17,17 +17,23 @@ export function filterSakes(
       if (!matchesName && !matchesBrewery) return false;
     }
 
-    // SMV range
-    if (filters.smvMin !== undefined && sake.smv < filters.smvMin) return false;
-    if (filters.smvMax !== undefined && sake.smv > filters.smvMax) return false;
+    // SMV range (sakes with null smv are excluded when SMV filter is active)
+    if (filters.smvMin !== undefined || filters.smvMax !== undefined) {
+      if (sake.smv == null) return false;
+      if (filters.smvMin !== undefined && sake.smv < filters.smvMin) return false;
+      if (filters.smvMax !== undefined && sake.smv > filters.smvMax) return false;
+    }
 
     // Acidity range
     if (filters.acidityMin !== undefined && sake.acidity < filters.acidityMin) return false;
     if (filters.acidityMax !== undefined && sake.acidity > filters.acidityMax) return false;
 
-    // Price range
-    if (filters.priceMin !== undefined && sake.price < filters.priceMin) return false;
-    if (filters.priceMax !== undefined && sake.price > filters.priceMax) return false;
+    // Price range (sakes with null price are excluded when price filter is active)
+    if (filters.priceMin !== undefined || filters.priceMax !== undefined) {
+      if (sake.price == null) return false;
+      if (filters.priceMin !== undefined && sake.price < filters.priceMin) return false;
+      if (filters.priceMax !== undefined && sake.price > filters.priceMax) return false;
+    }
 
     // Flavor tags (multi-select: sake must have ALL selected tags)
     if (filters.flavors && filters.flavors.length > 0) {
@@ -55,8 +61,9 @@ export function toCardData(sake: SakeWithTags): SakeCardData {
   };
 }
 
-/** Convert SakeWithTags to chart point data */
-export function toChartPoint(sake: SakeWithTags): ChartPoint {
+/** Convert SakeWithTags to chart point data. Returns null if smv is missing (can't plot). */
+export function toChartPoint(sake: SakeWithTags): ChartPoint | null {
+  if (sake.smv == null) return null;
   return {
     id: sake.id,
     slug: sake.slug,

@@ -70,7 +70,9 @@ export default async function SakeDetailPage({ params }: SakeDetailPageProps) {
 
           {/* Stats Grid */}
           <div className="grid grid-cols-2 sm:grid-cols-4 divide-x divide-sake-50 border-b border-sake-50">
-            <StatItem label="SMV" value={sake.smv > 0 ? `+${sake.smv}` : String(sake.smv)} />
+            {sake.smv != null && (
+              <StatItem label="SMV" value={sake.smv > 0 ? `+${sake.smv}` : String(sake.smv)} />
+            )}
             <StatItem label="Acidity" value={String(sake.acidity)} />
             {sake.abv && <StatItem label="ABV" value={`${sake.abv}%`} />}
             {sake.polishRatio && (
@@ -136,12 +138,14 @@ export default async function SakeDetailPage({ params }: SakeDetailPageProps) {
                       <span className="text-sake-400">Dry</span>
                     </div>
                     <div className="h-2 bg-sake-200 rounded-full relative">
-                      <div
-                        className="absolute top-1/2 -translate-y-1/2 w-3 h-3 bg-sake-700 rounded-full border-2 border-white shadow"
-                        style={{
-                          left: `${Math.min(100, Math.max(0, ((sake.smv + 15) / 35) * 100))}%`,
-                        }}
-                      />
+                      {sake.smv != null && (
+                        <div
+                          className="absolute top-1/2 -translate-y-1/2 w-3 h-3 bg-sake-700 rounded-full border-2 border-white shadow"
+                          style={{
+                            left: `${Math.min(100, Math.max(0, ((sake.smv + 20) / 40) * 100))}%`,
+                          }}
+                        />
+                      )}
                     </div>
                   </div>
                   <div className="flex-1">

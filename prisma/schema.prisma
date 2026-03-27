@@ -20,9 +20,9 @@ model Sake {
   region      String?
   description String
   imageUrl    String?
-  smv         Float    // Sake Meter Value (nihonshu-do)
+  smv         Float?   // Sake Meter Value (nihonshu-do) — null if unknown
   acidity     Float
-  price       Float    // Price per serving
+  price       Float?   // Price per serving — null if market price / inquire
   riceType    String?
   polishRatio Float?   // Seimaibuai percentage
   style       String?  // e.g. Junmai, Daiginjo, Nigori, etc.

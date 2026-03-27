@@ -10,9 +10,9 @@ interface SakeFormData {
   region?: string;
   description: string;
   imageUrl?: string;
-  smv: number;
+  smv?: number;
   acidity: number;
-  price: number;
+  price?: number;
   riceType?: string;
   polishRatio?: number;
   style?: string;
@@ -35,9 +35,9 @@ export async function createSake(data: SakeFormData) {
       region: data.region || null,
       description: data.description,
       imageUrl: data.imageUrl || null,
-      smv: data.smv,
+      smv: data.smv ?? null,
       acidity: data.acidity,
-      price: data.price,
+      price: data.price ?? null,
       riceType: data.riceType || null,
       polishRatio: data.polishRatio || null,
       style: data.style || null,
@@ -76,9 +76,9 @@ export async function updateSake(id: string, data: SakeFormData) {
       region: data.region || null,
       description: data.description,
       imageUrl: data.imageUrl || null,
-      smv: data.smv,
+      smv: data.smv ?? null,
       acidity: data.acidity,
-      price: data.price,
+      price: data.price ?? null,
       riceType: data.riceType || null,
       polishRatio: data.polishRatio || null,
       style: data.style || null,

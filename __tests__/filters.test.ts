@@ -35,11 +35,13 @@ describe('filterSakes', () => {
     makeSake({ id: '3', name: 'Ozeki Nigori', brewery: 'Ozeki', smv: -12, acidity: 1.0, price: 14, flavorNames: ['sweet', 'rich'] }),
     makeSake({ id: '4', name: 'Suigei Tokubetsu', brewery: 'Suigei', smv: 7, acidity: 1.5, price: 20, flavorNames: ['crisp', 'dry'] }),
     makeSake({ id: '5', name: 'Daishichi Kimoto', brewery: 'Daishichi', smv: 2, acidity: 1.6, price: 27, flavorNames: ['umami', 'earthy', 'rich'] }),
+    makeSake({ id: '6', name: 'Null SMV Sake', brewery: 'NullBrewery', smv: null, acidity: 1.3, price: 40, flavorNames: ['floral'] }),
+    makeSake({ id: '7', name: 'Null Price Sake', brewery: 'NullBrewery', smv: 3, acidity: 1.2, price: null, flavorNames: ['crisp'] }),
   ];
 
   it('returns all sakes when no filters applied', () => {
     const result = filterSakes(sakes, {});
-    expect(result).toHaveLength(5);
+    expect(result).toHaveLength(7);
   });
 
   it('filters by search text (sake name)', () => {
@@ -63,7 +65,7 @@ describe('filterSakes', () => {
   it('filters by SMV minimum', () => {
     const result = filterSakes(sakes, { smvMin: 4 });
     expect(result).toHaveLength(3); // Dassai (4), Hakkaisan (4), Suigei (7)
-    expect(result.every((s) => s.smv >= 4)).toBe(true);
+    expect(result.every((s) => s.smv != null && s.smv >= 4)).toBe(true);
   });
 
   it('filters by SMV maximum', () => {
@@ -74,7 +76,7 @@ describe('filterSakes', () => {
 
   it('filters by SMV range', () => {
     const result = filterSakes(sakes, { smvMin: 2, smvMax: 5 });
-    expect(result).toHaveLength(3);
+    expect(result).toHaveLength(4); // Dassai(4), Hakkaisan(4), Daishichi(2), NullPrice(3); NullSMV excluded
   });
 
   it('filters by acidity minimum', () => {
@@ -115,6 +117,7 @@ describe('filterSakes', () => {
       acidityMax: 1.2,
       priceMax: 50,
     });
+    // Null SMV and null price sakes are excluded when those filters are active
     expect(result).toHaveLength(2); // Dassai 23 and Hakkaisan
   });
 
@@ -123,8 +126,8 @@ describe('filterSakes', () => {
       search: 'sake',
       smvMin: 0,
     });
-    // No sakes match "sake" in name or brewery
-    expect(result).toHaveLength(0);
+    // "Null SMV Sake" and "Null Price Sake" match "sake" in name; null SMV excluded by smvMin filter
+    expect(result).toHaveLength(1); // Only Null Price Sake (smv=3 >= 0)
   });
 });
 
@@ -155,10 +158,24 @@ describe('toChartPoint', () => {
   it('converts SakeWithTags to ChartPoint', () => {
     const sake = makeSake({ id: 'c', slug: 'chart-test', smv: 5, acidity: 1.5, price: 30 });
     const point = toChartPoint(sake);
-    expect(point.id).toBe('c');
-    expect(point.smv).toBe(5);
-    expect(point.acidity).toBe(1.5);
-    expect(point.price).toBe(30);
+    expect(point).not.toBeNull();
+    expect(point!.id).toBe('c');
+    expect(point!.smv).toBe(5);
+    expect(point!.acidity).toBe(1.5);
+    expect(point!.price).toBe(30);
+  });
+
+  it('returns null for sake with null SMV', () => {
+    const sake = makeSake({ id: 'n', slug: 'null-smv', smv: null, acidity: 1.3, price: 40 });
+    const point = toChartPoint(sake);
+    expect(point).toBeNull();
+  });
+
+  it('allows null price in chart point', () => {
+    const sake = makeSake({ id: 'np', slug: 'null-price', smv: 3, acidity: 1.2, price: null });
+    const point = toChartPoint(sake);
+    expect(point).not.toBeNull();
+    expect(point!.price).toBeNull();
   });
 });
 

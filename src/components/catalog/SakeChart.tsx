@@ -49,17 +49,19 @@ export default function SakeChart({ data }: SakeChartProps) {
         <p className="font-semibold text-sm text-charcoal leading-tight">{sake.name}</p>
         <p className="text-xs text-sake-500 mt-0.5">{sake.brewery}</p>
         <div className="flex gap-3 mt-2 text-xs text-sake-600">
-          <span>SMV: {sake.smv > 0 ? `+${sake.smv}` : sake.smv}</span>
+          <span>SMV: {sake.smv != null ? (sake.smv > 0 ? `+${sake.smv}` : sake.smv) : 'N/A'}</span>
           <span>Acid: {sake.acidity}</span>
         </div>
-        <p className="text-xs font-semibold text-sake-800 mt-1">{formatPrice(sake.price)}</p>
+        {sake.price != null && (
+          <p className="text-xs font-semibold text-sake-800 mt-1">{formatPrice(sake.price)}</p>
+        )}
       </div>
     );
   };
 
-  const renderDot = (props: CustomDotProps) => {
-    const { cx, cy, payload } = props;
-    if (cx == null || cy == null || !payload) return null;
+  const renderDot = (props: unknown) => {
+    const { cx, cy, payload } = props as CustomDotProps;
+    if (cx == null || cy == null || !payload) return <circle r={0} />;
     const isActive = activePoint?.id === payload.id;
     return (
       <circle
@@ -145,7 +147,7 @@ export default function SakeChart({ data }: SakeChartProps) {
             <p className="text-xs text-sake-500">
               {activePoint.brewery} &middot; SMV{' '}
               {activePoint.smv > 0 ? `+${activePoint.smv}` : activePoint.smv} &middot; Acidity{' '}
-              {activePoint.acidity} &middot; {formatPrice(activePoint.price)}
+              {activePoint.acidity}{activePoint.price != null ? ` · ${formatPrice(activePoint.price)}` : ''}
             </p>
           </div>
           <Link href={`/sake/${activePoint.slug}`} className="btn-primary text-xs px-3 py-1.5">

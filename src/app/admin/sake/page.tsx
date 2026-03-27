@@ -63,7 +63,7 @@ export default async function AdminSakeListPage() {
                       {sake.style && <span className="badge-style">{sake.style}</span>}
                     </td>
                     <td className="py-3 px-4 text-right text-gray-600">
-                      {sake.smv > 0 ? `+${sake.smv}` : sake.smv}
+                      {sake.smv != null ? (sake.smv > 0 ? `+${sake.smv}` : sake.smv) : '—'}
                     </td>
                     <td className="py-3 px-4 text-right text-gray-600">{sake.acidity}</td>
                     <td className="py-3 px-4 text-right font-medium">

@@ -115,7 +115,9 @@ export async function getRelatedSakes(
     const sharedTags = sake.flavorTags.filter((ft: { flavorTag: { name: string } }) =>
       tagNames.includes(ft.flavorTag.name)
     ).length;
-    const smvDiff = Math.abs(sake.smv - currentSake.smv) / 35;
+    const smvDiff = (sake.smv != null && currentSake.smv != null)
+      ? Math.abs(sake.smv - currentSake.smv) / 35
+      : 0.5;
     const acidityDiff = Math.abs(sake.acidity - currentSake.acidity) / 2.5;
     const score = sharedTags * 2 - smvDiff - acidityDiff;
     return { sake, score };

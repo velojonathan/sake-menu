@@ -22,13 +22,17 @@ export default function SakeCard({ sake }: SakeCardProps) {
       </div>
 
       <div className="flex items-center gap-3 mt-3 text-xs text-sake-600">
-        <span className="flex items-center gap-1">
-          <span className="font-medium">SMV</span>
-          <span className="text-charcoal font-semibold">
-            {sake.smv > 0 ? `+${sake.smv}` : sake.smv}
-          </span>
-        </span>
-        <span className="text-sake-200">|</span>
+        {sake.smv != null && (
+          <>
+            <span className="flex items-center gap-1">
+              <span className="font-medium">SMV</span>
+              <span className="text-charcoal font-semibold">
+                {sake.smv > 0 ? `+${sake.smv}` : sake.smv}
+              </span>
+            </span>
+            <span className="text-sake-200">|</span>
+          </>
+        )}
         <span className="flex items-center gap-1">
           <span className="font-medium">Acid</span>
           <span className="text-charcoal font-semibold">{sake.acidity}</span>

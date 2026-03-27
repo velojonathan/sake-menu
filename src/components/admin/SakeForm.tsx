@@ -12,9 +12,9 @@ interface SakeFormData {
   region: string;
   description: string;
   imageUrl: string;
-  smv: number;
+  smv: string;
   acidity: number;
-  price: number;
+  price: string;
   riceType: string;
   polishRatio: string;
   style: string;
@@ -33,9 +33,9 @@ const defaultFormData: SakeFormData = {
   region: '',
   description: '',
   imageUrl: '',
-  smv: 0,
+  smv: '',
   acidity: 1.2,
-  price: 15,
+  price: '',
   riceType: '',
   polishRatio: '',
   style: '',
@@ -68,9 +68,9 @@ export default function SakeForm({ initialData, sakeId }: SakeFormProps) {
         region: formData.region.trim() || undefined,
         description: formData.description.trim(),
         imageUrl: formData.imageUrl.trim() || undefined,
-        smv: formData.smv,
+        smv: formData.smv ? parseFloat(formData.smv) : undefined,
         acidity: formData.acidity,
-        price: formData.price,
+        price: formData.price ? parseFloat(formData.price) : undefined,
         riceType: formData.riceType.trim() || undefined,
         polishRatio: formData.polishRatio ? parseFloat(formData.polishRatio) : undefined,
         style: formData.style || undefined,
@@ -187,15 +187,15 @@ export default function SakeForm({ initialData, sakeId }: SakeFormProps) {
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            SMV <span className="text-red-500">*</span>
+            SMV
           </label>
           <input
             type="number"
             step="0.1"
             value={formData.smv}
-            onChange={(e) => updateField('smv', parseFloat(e.target.value) || 0)}
+            onChange={(e) => updateField('smv', e.target.value)}
             className="input-field"
-            required
+            placeholder="e.g. 3"
           />
         </div>
         <div>
@@ -213,15 +213,15 @@ export default function SakeForm({ initialData, sakeId }: SakeFormProps) {
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Price ($) <span className="text-red-500">*</span>
+            Price ($)
           </label>
           <input
             type="number"
             step="0.01"
             value={formData.price}
-            onChange={(e) => updateField('price', parseFloat(e.target.value) || 0)}
+            onChange={(e) => updateField('price', e.target.value)}
             className="input-field"
-            required
+            placeholder="e.g. 25"
           />
         </div>
         <div>

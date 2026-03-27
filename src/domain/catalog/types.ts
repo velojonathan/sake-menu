@@ -8,9 +8,9 @@ export interface SakeWithTags {
   region: string | null;
   description: string;
   imageUrl: string | null;
-  smv: number;
+  smv: number | null;
   acidity: number;
-  price: number;
+  price: number | null;
   riceType: string | null;
   polishRatio: number | null;
   style: string | null;
@@ -30,9 +30,9 @@ export interface SakeCardData {
   slug: string;
   name: string;
   brewery: string;
-  smv: number;
+  smv: number | null;
   acidity: number;
-  price: number;
+  price: number | null;
   style: string | null;
   flavorTags: string[];
 }
@@ -55,6 +55,6 @@ export interface ChartPoint {
   brewery: string;
   smv: number;
   acidity: number;
-  price: number;
+  price: number | null;
   style: string | null;
 }

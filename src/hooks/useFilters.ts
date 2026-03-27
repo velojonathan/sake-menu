@@ -37,7 +37,10 @@ export function useFilters(allSakes: SakeWithTags[]) {
 
   const cardData = useMemo(() => filteredSakes.map(toCardData), [filteredSakes]);
 
-  const chartData = useMemo(() => filteredSakes.map(toChartPoint), [filteredSakes]);
+  const chartData = useMemo(
+    () => filteredSakes.map(toChartPoint).filter((p): p is NonNullable<typeof p> => p != null),
+    [filteredSakes]
+  );
 
   return {
     filters,
