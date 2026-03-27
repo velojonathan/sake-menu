@@ -8,35 +8,35 @@
     -moz-osx-font-smoothing: grayscale;
     scroll-behavior: smooth;
   }
+
+  body {
+    background-color: #fcf9f3;
+    color: #1c1c18;
+  }
+
+  ::selection {
+    @apply bg-secondary-container;
+  }
 }
 
 @layer components {
-  /* ── "Menu Sheet" card ─ no borders, tonal layering ──── */
-  .sake-card {
-    @apply bg-surface-container-lowest rounded-sm
-           shadow-ambient transition-colors duration-200
-           hover:bg-surface-container-high;
-  }
-
-  /* ── Filter section ─ subtle inset ───────────────────── */
-  .filter-section {
-    @apply bg-surface-container-low rounded-sm p-6;
-  }
-
   /* ── Buttons ─────────────────────────────────────────── */
   .btn-primary {
     @apply inline-flex items-center justify-center rounded-sm
-           bg-secondary text-on-secondary px-5 py-2.5 text-sm font-medium
-           transition-colors hover:brightness-110
-           focus:outline-none focus:ring-2 focus:ring-secondary/40 focus:ring-offset-2
+           bg-secondary text-on-secondary px-5 py-4 font-label
+           text-[10px] uppercase tracking-[0.15em] font-bold
+           transition-opacity active:opacity-90
+           focus:outline-none
            disabled:opacity-50 disabled:cursor-not-allowed;
   }
 
   .btn-secondary {
     @apply inline-flex items-center justify-center rounded-sm
-           bg-surface-container-lowest text-on-surface-variant px-5 py-2.5 text-sm font-medium
-           shadow-ambient transition-colors hover:bg-surface-container-high
-           focus:outline-none focus:ring-2 focus:ring-secondary/40 focus:ring-offset-2
+           bg-surface-container-lowest text-tertiary px-5 py-4 font-label
+           text-[10px] uppercase tracking-[0.15em] font-bold
+           border border-tertiary/20
+           transition-colors active:bg-surface-container-high
+           focus:outline-none
            disabled:opacity-50 disabled:cursor-not-allowed;
   }
 
@@ -50,19 +50,20 @@
   /* ── Input fields ─ underline-only ledger style ──────── */
   .input-field {
     @apply w-full border-0 border-b border-outline-variant/40 bg-transparent
-           px-0 py-2.5 text-sm text-on-surface
+           px-0 py-2.5 text-sm text-on-surface font-body
            placeholder:text-on-surface-variant/50
            focus:outline-none focus:border-b-2 focus:border-tertiary
            transition-colors;
   }
 
-  /* ── Badges ──────────────────────────────────────────── */
+  /* ── Badges / Chips ────────────────────────────────────── */
   .badge {
-    @apply inline-flex items-center rounded-full px-3 py-1 text-xs font-medium;
+    @apply inline-flex items-center rounded-full px-4 py-1.5 font-label
+           text-[10px] tracking-wider uppercase;
   }
 
   .badge-flavor {
-    @apply badge bg-secondary-container text-secondary-on-container;
+    @apply badge bg-secondary-container text-on-secondary-container;
   }
 
   .badge-style {
@@ -71,43 +72,63 @@
 
   /* ── Typography helpers ──────────────────────────────── */
   .display-lg {
-    @apply font-serif text-4xl sm:text-5xl font-semibold tracking-display text-on-surface;
+    @apply font-headline text-4xl sm:text-5xl font-bold tracking-tight text-on-surface;
   }
 
   .headline-md {
-    @apply font-serif text-2xl sm:text-3xl font-medium tracking-display text-on-surface;
+    @apply font-headline text-2xl sm:text-3xl font-medium tracking-display text-on-surface;
   }
 
   .title-lg {
-    @apply font-sans text-lg font-semibold text-on-surface;
+    @apply font-headline text-lg font-semibold text-on-surface;
   }
 
   .title-md {
-    @apply font-sans text-base font-semibold text-on-surface;
+    @apply font-body text-base font-semibold text-on-surface;
   }
 
   .body-md {
-    @apply font-sans text-sm text-on-surface-variant leading-relaxed;
+    @apply font-body text-sm text-on-surface-variant leading-relaxed;
   }
 
   .label-sm {
-    @apply font-sans text-xs uppercase tracking-label text-on-surface-variant;
+    @apply font-label text-[10px] uppercase tracking-[0.2em] text-outline;
+  }
+
+  /* ── Sake card (tasting menu item) ─────────────────── */
+  .sake-card {
+    @apply py-5 flex justify-between items-start gap-4
+           transition-colors duration-300
+           active:bg-surface-container-high;
+  }
+
+  /* ── Bottom sheet ──────────────────────────────────── */
+  .bottom-sheet-overlay {
+    @apply fixed inset-0 z-40 bg-on-surface/20 backdrop-blur-sm
+           transition-opacity duration-300;
+  }
+
+  .bottom-sheet {
+    @apply fixed bottom-0 left-0 right-0 z-50
+           bg-surface rounded-t-xl
+           transition-transform duration-300 ease-out
+           max-h-[85vh] overflow-y-auto;
   }
 }
 
 /* ── Range slider styling ──────────────────────────────── */
 input[type='range'] {
-  @apply w-full h-1.5 rounded-full appearance-none cursor-pointer bg-surface-container-high;
+  @apply w-full h-[2px] appearance-none cursor-pointer bg-outline-variant/40;
 }
 
 input[type='range']::-webkit-slider-thumb {
-  @apply appearance-none w-4 h-4 rounded-full bg-secondary cursor-pointer
-         shadow-ambient border-2 border-surface;
+  @apply appearance-none w-5 h-5 rounded-full bg-primary-container cursor-pointer
+         border-4 border-surface;
 }
 
 input[type='range']::-moz-range-thumb {
-  @apply w-4 h-4 rounded-full bg-secondary cursor-pointer
-         shadow-ambient border-2 border-surface;
+  @apply w-5 h-5 rounded-full bg-primary-container cursor-pointer
+         border-4 border-surface;
 }
 
 /* ── Recharts tooltip ──────────────────────────────────── */
@@ -122,7 +143,26 @@ input[type='range']::-moz-range-thumb {
 }
 
 .skeleton {
-  background: linear-gradient(90deg, #f6f3ed 25%, #f0ede7 50%, #f6f3ed 75%);
+  background: linear-gradient(90deg, #f6f3ed 25%, #f0eee8 50%, #f6f3ed 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
+}
+
+/* ── Bottom sheet animation ────────────────────────────── */
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-slide-up {
+  animation: slideUp 0.3s ease-out forwards;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.2s ease-out forwards;
 }

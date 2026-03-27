@@ -2,29 +2,25 @@ import Link from 'next/link';
 
 export default function Header() {
   return (
-    <header className="sticky top-0 z-50 bg-surface-bright/90 backdrop-blur-xl">
-      <div className="max-w-7xl mx-auto px-8 sm:px-10 lg:px-12">
-        <div className="flex items-center justify-between h-16">
-          <Link href="/" className="flex items-center gap-3">
-            <span className="font-serif text-xl font-semibold tracking-display text-on-surface">
-              Sake Menu
-            </span>
-          </Link>
-          <nav className="hidden sm:flex items-center gap-8">
-            <Link
-              href="/"
-              className="text-sm text-on-surface-variant hover:text-on-surface transition-colors"
-            >
-              Explore
-            </Link>
-            <Link
-              href="/#chart"
-              className="text-sm text-on-surface-variant hover:text-on-surface transition-colors"
-            >
-              Chart
-            </Link>
-          </nav>
-        </div>
+    <header className="fixed top-0 w-full z-50 bg-surface px-6 h-16 flex items-center justify-between">
+      <Link href="/" className="flex items-center gap-2">
+        <span className="font-headline tracking-display text-sm uppercase text-primary">
+          OMA
+        </span>
+        <span className="font-headline tracking-display text-sm uppercase text-primary">
+          KASE
+        </span>
+      </Link>
+      <div className="flex items-center gap-4">
+        <Link
+          href="/#discovery"
+          className="hover:opacity-70 transition-opacity"
+          aria-label="Discovery map"
+        >
+          <svg className="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+          </svg>
+        </Link>
       </div>
     </header>
   );

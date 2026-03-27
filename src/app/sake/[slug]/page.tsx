@@ -24,157 +24,147 @@ export default async function SakeDetailPage({ params }: SakeDetailPageProps) {
   return (
     <>
       <Header />
-      <main className="max-w-4xl mx-auto px-8 sm:px-10 lg:px-12 py-10">
-        {/* Breadcrumb */}
-        <nav className="mb-8">
+      <main className="max-w-2xl mx-auto px-6 pt-16">
+        {/* Back link */}
+        <nav className="pt-8 mb-10">
           <Link
             href="/"
-            className="btn-tertiary text-sm flex items-center gap-1.5"
+            className="label-sm text-tertiary flex items-center gap-1.5 hover:text-tertiary-container transition-colors"
           >
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor">
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
             </svg>
-            Back to menu
+            Back to Collection
           </Link>
         </nav>
 
-        {/* Sake Detail Card */}
-        <div className="bg-surface-container-lowest rounded-sm shadow-ambient overflow-hidden">
-          {/* Header */}
-          <div className="p-6 sm:p-8">
-            <div className="flex items-start justify-between gap-4">
-              <div>
-                <h1 className="font-serif text-2xl sm:text-3xl font-semibold text-on-surface tracking-display">{sake.name}</h1>
-                <p className="text-on-surface-variant mt-1.5">{sake.brewery}</p>
-                {sake.region && (
-                  <p className="text-sm text-on-surface-variant/60 mt-0.5">{sake.region}</p>
-                )}
-              </div>
-              <div className="text-right">
-                <p className="text-2xl font-semibold text-on-surface">{formatPrice(sake.price)}</p>
-                {sake.style && <span className="badge-style mt-1">{sake.style}</span>}
-              </div>
+        {/* Editorial header */}
+        <div className="mb-10">
+          {sake.style && (
+            <p className="label-sm text-outline mb-3">{sake.style}</p>
+          )}
+          <h1 className="font-headline text-3xl sm:text-4xl font-bold tracking-tight text-on-surface leading-tight">
+            {sake.name}
+          </h1>
+          <p className="font-body text-sm text-on-surface-variant mt-2">
+            {sake.brewery}{sake.region ? ` \u2022 ${sake.region}` : ''}
+          </p>
+        </div>
+
+        {/* Stats row */}
+        <div className="grid grid-cols-3 gap-px bg-outline-variant/10 mb-10">
+          {sake.smv != null && (
+            <div className="bg-surface py-5 text-center">
+              <p className="label-sm text-outline mb-1">SMV</p>
+              <p className="font-headline text-2xl text-on-surface">
+                {sake.smv > 0 ? `+${sake.smv}` : String(sake.smv)}
+              </p>
             </div>
-
-            {/* Flavor tags */}
-            {flavorTags.length > 0 && (
-              <div className="flex flex-wrap gap-2 mt-5">
-                {flavorTags.map((tag) => (
-                  <span key={tag} className="badge-flavor capitalize text-sm px-3 py-1.5">
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            )}
+          )}
+          <div className="bg-surface py-5 text-center">
+            <p className="label-sm text-outline mb-1">Acidity</p>
+            <p className="font-headline text-2xl text-on-surface">{sake.acidity}</p>
           </div>
+          <div className="bg-surface py-5 text-center">
+            <p className="label-sm text-outline mb-1">Price</p>
+            <p className="font-headline text-2xl text-on-surface">{formatPrice(sake.price)}</p>
+          </div>
+        </div>
 
-          {/* Stats Grid — no borders, use background shift */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 bg-surface-container-low">
+        {/* Taste Profile visualization */}
+        <div className="mb-10">
+          <p className="label-sm text-outline mb-5">Flavor Architecture</p>
+          <div className="space-y-5">
             {sake.smv != null && (
-              <StatItem label="SMV" value={sake.smv > 0 ? `+${sake.smv}` : String(sake.smv)} />
-            )}
-            <StatItem label="Acidity" value={String(sake.acidity)} />
-            {sake.abv && <StatItem label="ABV" value={`${sake.abv}%`} />}
-            {sake.polishRatio && (
-              <StatItem label="Polish" value={formatPolishRatio(sake.polishRatio)} />
-            )}
-          </div>
-
-          {/* Description & Details */}
-          <div className="p-6 sm:p-8 space-y-8">
-            <div>
-              <h2 className="label-sm mb-3">
-                Description
-              </h2>
-              <p className="text-on-surface leading-relaxed">{sake.description}</p>
-            </div>
-
-            {(sake.riceType || sake.polishRatio) && (
               <div>
-                <h2 className="label-sm mb-3">
-                  Details
-                </h2>
-                <dl className="grid grid-cols-2 gap-4 text-sm">
-                  {sake.riceType && (
-                    <div>
-                      <dt className="text-on-surface-variant/60">Rice Type</dt>
-                      <dd className="font-medium text-on-surface mt-0.5">{sake.riceType}</dd>
-                    </div>
-                  )}
-                  {sake.polishRatio && (
-                    <div>
-                      <dt className="text-on-surface-variant/60">Polish Ratio</dt>
-                      <dd className="font-medium text-on-surface mt-0.5">
-                        {formatPolishRatio(sake.polishRatio)}
-                      </dd>
-                    </div>
-                  )}
-                  {sake.abv && (
-                    <div>
-                      <dt className="text-on-surface-variant/60">ABV</dt>
-                      <dd className="font-medium text-on-surface mt-0.5">{sake.abv}%</dd>
-                    </div>
-                  )}
-                  {sake.region && (
-                    <div>
-                      <dt className="text-on-surface-variant/60">Region</dt>
-                      <dd className="font-medium text-on-surface mt-0.5">{sake.region}</dd>
-                    </div>
-                  )}
-                </dl>
+                <div className="flex justify-between mb-2">
+                  <span className="font-label text-[10px] uppercase tracking-widest text-outline">Sweet</span>
+                  <span className="font-label text-[10px] uppercase tracking-widest text-outline">Dry</span>
+                </div>
+                <div className="h-[2px] bg-outline-variant/20 relative">
+                  <div
+                    className="absolute top-1/2 -translate-y-1/2 w-3 h-3 bg-secondary rounded-full"
+                    style={{
+                      left: `${Math.min(100, Math.max(0, ((sake.smv + 20) / 40) * 100))}%`,
+                    }}
+                  />
+                </div>
               </div>
             )}
-
-            {/* SMV/Acidity quadrant indicator */}
             <div>
-              <h2 className="label-sm mb-3">
-                Taste Profile
-              </h2>
-              <div className="bg-surface-container-low rounded-sm p-5">
-                <div className="flex items-center gap-6 text-sm">
-                  <div className="flex-1">
-                    <div className="flex justify-between mb-1.5">
-                      <span className="text-on-surface-variant/60 text-xs">Sweet</span>
-                      <span className="text-on-surface-variant/60 text-xs">Dry</span>
-                    </div>
-                    <div className="h-1.5 bg-surface-container-highest rounded-full relative">
-                      {sake.smv != null && (
-                        <div
-                          className="absolute top-1/2 -translate-y-1/2 w-3 h-3 bg-secondary rounded-full"
-                          style={{
-                            left: `${Math.min(100, Math.max(0, ((sake.smv + 20) / 40) * 100))}%`,
-                          }}
-                        />
-                      )}
-                    </div>
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex justify-between mb-1.5">
-                      <span className="text-on-surface-variant/60 text-xs">Mild</span>
-                      <span className="text-on-surface-variant/60 text-xs">Sharp</span>
-                    </div>
-                    <div className="h-1.5 bg-surface-container-highest rounded-full relative">
-                      <div
-                        className="absolute top-1/2 -translate-y-1/2 w-3 h-3 bg-secondary rounded-full"
-                        style={{
-                          left: `${Math.min(100, Math.max(0, ((sake.acidity - 0.5) / 2.5) * 100))}%`,
-                        }}
-                      />
-                    </div>
-                  </div>
-                </div>
+              <div className="flex justify-between mb-2">
+                <span className="font-label text-[10px] uppercase tracking-widest text-outline">Light</span>
+                <span className="font-label text-[10px] uppercase tracking-widest text-outline">Rich</span>
+              </div>
+              <div className="h-[2px] bg-outline-variant/20 relative">
+                <div
+                  className="absolute top-1/2 -translate-y-1/2 w-3 h-3 bg-secondary rounded-full"
+                  style={{
+                    left: `${Math.min(100, Math.max(0, ((sake.acidity - 0.5) / 2.5) * 100))}%`,
+                  }}
+                />
               </div>
             </div>
           </div>
         </div>
 
+        {/* Tasting Notes */}
+        <div className="mb-10">
+          <p className="label-sm text-outline mb-4">Tasting Notes</p>
+          <p className="font-body text-base text-on-surface leading-relaxed">
+            {sake.description}
+          </p>
+        </div>
+
+        {/* Flavor tags */}
+        {flavorTags.length > 0 && (
+          <div className="mb-10">
+            <p className="label-sm text-outline mb-4">Flavor Profile</p>
+            <div className="flex flex-wrap gap-2">
+              {flavorTags.map((tag) => (
+                <span
+                  key={tag}
+                  className="px-4 py-2 bg-surface-container-high font-label text-[11px] uppercase tracking-wider text-on-surface-variant"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Details */}
+        {(sake.riceType || sake.polishRatio || sake.abv) && (
+          <div className="mb-10">
+            <p className="label-sm text-outline mb-4">Details</p>
+            <dl className="space-y-3">
+              {sake.riceType && (
+                <div className="flex justify-between items-baseline py-2 border-b border-outline-variant/10">
+                  <dt className="font-label text-[10px] uppercase tracking-widest text-outline">Rice Type</dt>
+                  <dd className="font-body text-sm text-on-surface">{sake.riceType}</dd>
+                </div>
+              )}
+              {sake.polishRatio && (
+                <div className="flex justify-between items-baseline py-2 border-b border-outline-variant/10">
+                  <dt className="font-label text-[10px] uppercase tracking-widest text-outline">Polish Ratio</dt>
+                  <dd className="font-body text-sm text-on-surface">{formatPolishRatio(sake.polishRatio)}</dd>
+                </div>
+              )}
+              {sake.abv && (
+                <div className="flex justify-between items-baseline py-2 border-b border-outline-variant/10">
+                  <dt className="font-label text-[10px] uppercase tracking-widest text-outline">ABV</dt>
+                  <dd className="font-body text-sm text-on-surface">{sake.abv}%</dd>
+                </div>
+              )}
+            </dl>
+          </div>
+        )}
+
         {/* Related Sakes */}
         {relatedSakes.length > 0 && (
-          <section className="mt-16">
-            <h2 className="font-serif text-xl font-medium text-on-surface tracking-display mb-6">
-              You Might Also Enjoy
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <section className="mt-16 mb-16">
+            <p className="label-sm text-outline mb-6">Similar Expressions</p>
+            <div className="divide-y divide-outline-variant/10">
               {relatedSakes.map((related) => (
                 <SakeCard key={related.id} sake={toCardData(related)} />
               ))}
@@ -184,14 +174,5 @@ export default async function SakeDetailPage({ params }: SakeDetailPageProps) {
       </main>
       <Footer />
     </>
-  );
-}
-
-function StatItem({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="py-5 px-4 text-center">
-      <p className="label-sm">{label}</p>
-      <p className="text-lg font-semibold text-on-surface mt-1">{value}</p>
-    </div>
   );
 }

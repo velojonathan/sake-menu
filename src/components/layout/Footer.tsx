@@ -1,16 +1,16 @@
 export default function Footer() {
   return (
-    <footer className="bg-surface-container-low mt-24">
-      <div className="max-w-7xl mx-auto px-8 sm:px-10 lg:px-12 py-10">
+    <footer className="mt-24 border-t border-outline-variant/10">
+      <div className="max-w-2xl mx-auto px-6 py-10">
         <div className="flex flex-col sm:flex-row items-start justify-between gap-6">
           <div>
-            <span className="font-serif text-lg font-medium text-on-surface tracking-display">
-              Sake Menu
+            <span className="font-headline text-sm uppercase tracking-widest text-primary">
+              OMAKASE
             </span>
-            <p className="body-md mt-1">Explore our curated collection</p>
+            <p className="font-body text-xs text-outline mt-2">Curated sake collection</p>
           </div>
-          <p className="text-xs text-on-surface-variant/60">
-            Please drink responsibly. Must be 21+ to consume alcohol.
+          <p className="font-label text-[10px] uppercase tracking-widest text-outline/60">
+            Please drink responsibly
           </p>
         </div>
       </div>

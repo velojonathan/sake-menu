@@ -45,15 +45,15 @@ export default function SakeChart({ data }: SakeChartProps) {
     if (!active || !payload || payload.length === 0) return null;
     const sake = payload[0].payload;
     return (
-      <div className="bg-white rounded-lg shadow-lg border border-sake-100 p-3 max-w-[200px]">
-        <p className="font-semibold text-sm text-charcoal leading-tight">{sake.name}</p>
-        <p className="text-xs text-sake-500 mt-0.5">{sake.brewery}</p>
-        <div className="flex gap-3 mt-2 text-xs text-sake-600">
+      <div className="bg-surface-container-lowest p-4 shadow-ambient max-w-[220px]">
+        <p className="font-headline text-sm text-on-surface leading-tight">{sake.name}</p>
+        <p className="font-label text-[10px] uppercase tracking-widest text-outline mt-1">{sake.brewery}</p>
+        <div className="flex gap-3 mt-2 font-label text-[10px] text-outline">
           <span>SMV: {sake.smv != null ? (sake.smv > 0 ? `+${sake.smv}` : sake.smv) : 'N/A'}</span>
           <span>Acid: {sake.acidity}</span>
         </div>
         {sake.price != null && (
-          <p className="text-xs font-semibold text-sake-800 mt-1">{formatPrice(sake.price)}</p>
+          <p className="font-headline text-sm text-on-surface mt-2">{formatPrice(sake.price)}</p>
         )}
       </div>
     );
@@ -68,63 +68,51 @@ export default function SakeChart({ data }: SakeChartProps) {
         key={payload.id}
         cx={cx}
         cy={cy}
-        r={isActive ? 8 : 5}
-        fill={isActive ? '#6f533f' : '#b08e65'}
-        stroke={isActive ? '#30231b' : '#886548'}
+        r={isActive ? 7 : 4}
+        fill={isActive ? '#5a6240' : '#5c5c5c'}
+        stroke={isActive ? '#424a2a' : '#757474'}
         strokeWidth={isActive ? 2 : 1}
         cursor="pointer"
+        opacity={isActive ? 1 : 0.7}
       />
     );
   };
 
   if (data.length === 0) {
     return (
-      <div className="flex items-center justify-center h-64 bg-surface-container-lowest rounded-sm shadow-ambient">
-        <p className="body-md">No data to display</p>
+      <div className="flex items-center justify-center h-48 bg-surface">
+        <p className="font-body text-sm text-outline">No data to display</p>
       </div>
     );
   }
 
   return (
-    <div className="bg-surface-container-lowest rounded-sm shadow-ambient p-6">
-      <div className="flex items-center justify-between mb-4">
-        <div>
-          <h3 className="title-md">SMV vs Acidity</h3>
-          <p className="body-md mt-1">
-            Tap a point to see details &middot; {data.length} sake{data.length !== 1 ? 's' : ''}
-          </p>
-        </div>
-        <span className="label-sm hidden sm:block">Sweet &larr; &middot; &rarr; Dry</span>
+    <div>
+      <div className="flex items-center justify-between mb-6">
+        <h3 className="font-headline text-xl text-on-surface">Discovery Map</h3>
+        <span className="label-sm text-outline/60">SMV vs Acidity</span>
       </div>
 
-      <ResponsiveContainer width="100%" height={300}>
-        <ScatterChart margin={{ top: 10, right: 10, bottom: 20, left: 0 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#eae7e1" />
+      <ResponsiveContainer width="100%" height={260}>
+        <ScatterChart margin={{ top: 10, right: 10, bottom: 24, left: 0 }}>
+          <CartesianGrid strokeDasharray="3 3" stroke="#e5e2dc" strokeOpacity={0.5} />
           <XAxis
             type="number"
             dataKey="smv"
             name="SMV"
             domain={['auto', 'auto']}
-            tick={{ fontSize: 11, fill: '#4a4740' }}
-            label={{
-              value: 'SMV (Sweet \u2190 \u2192 Dry)',
-              position: 'insideBottom',
-              offset: -10,
-              style: { fontSize: 11, fill: '#4a4740' },
-            }}
+            tick={{ fontSize: 10, fill: '#80756b' }}
+            axisLine={{ stroke: '#d1c4b8', strokeOpacity: 0.4 }}
+            tickLine={false}
           />
           <YAxis
             type="number"
             dataKey="acidity"
             name="Acidity"
             domain={['auto', 'auto']}
-            tick={{ fontSize: 11, fill: '#4a4740' }}
-            label={{
-              value: 'Acidity',
-              angle: -90,
-              position: 'insideLeft',
-              style: { fontSize: 11, fill: '#4a4740' },
-            }}
+            tick={{ fontSize: 10, fill: '#80756b' }}
+            axisLine={{ stroke: '#d1c4b8', strokeOpacity: 0.4 }}
+            tickLine={false}
           />
           <Tooltip content={<CustomTooltip />} />
           <Scatter
@@ -137,21 +125,35 @@ export default function SakeChart({ data }: SakeChartProps) {
         </ScatterChart>
       </ResponsiveContainer>
 
+      {/* Axis labels */}
+      <div className="flex justify-between mt-1 px-8">
+        <span className="label-sm text-outline/60">Sweet (Dry)</span>
+        <span className="label-sm text-outline/60">Dry (Sweet)</span>
+      </div>
+
       {/* Active point detail card */}
       {activePoint && (
-        <div className="mt-4 p-4 bg-surface-container-low rounded-sm flex items-center justify-between">
+        <Link
+          href={`/sake/${activePoint.slug}`}
+          className="mt-6 p-5 bg-surface-container-low flex items-center justify-between group active:bg-surface-container-high transition-colors duration-300"
+        >
           <div>
-            <p className="title-md">{activePoint.name}</p>
-            <p className="body-md mt-0.5">
+            <p className="font-headline text-base text-on-surface">{activePoint.name}</p>
+            <p className="font-label text-[10px] uppercase tracking-widest text-outline mt-1">
               {activePoint.brewery} &middot; SMV{' '}
               {activePoint.smv > 0 ? `+${activePoint.smv}` : activePoint.smv} &middot; Acidity{' '}
-              {activePoint.acidity}{activePoint.price != null ? ` \u00B7 ${formatPrice(activePoint.price)}` : ''}
+              {activePoint.acidity}
             </p>
           </div>
-          <Link href={`/sake/${activePoint.slug}`} className="btn-primary text-xs px-4 py-2">
-            View Details
-          </Link>
-        </div>
+          <div className="flex items-center gap-3">
+            {activePoint.price != null && (
+              <span className="font-headline text-base text-on-surface">{formatPrice(activePoint.price)}</span>
+            )}
+            <svg className="w-5 h-5 text-outline group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+            </svg>
+          </div>
+        </Link>
       )}
     </div>
   );

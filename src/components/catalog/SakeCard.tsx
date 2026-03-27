@@ -7,43 +7,27 @@ interface SakeCardProps {
 }
 
 export default function SakeCard({ sake }: SakeCardProps) {
+  const styleLabel = sake.style ? sake.style.toUpperCase() : '';
+  const flavorLabel = sake.flavorTags.length > 0
+    ? sake.flavorTags.map((t) => t.toUpperCase()).join(' \u00B7 ')
+    : '';
+  const metaLine = [styleLabel, flavorLabel].filter(Boolean).join(' \u00B7 ');
+
   return (
-    <Link href={`/sake/${sake.slug}`} className="sake-card block p-6 active:scale-[0.99]">
-      <div className="flex items-start justify-between gap-4">
-        <div className="flex-1 min-w-0">
-          <h3 className="title-md leading-tight truncate">
-            {sake.name}
-          </h3>
-          <p className="text-sm text-on-surface-variant/70 mt-1 truncate">{sake.brewery}</p>
-        </div>
-        <span className="text-sm font-semibold text-on-surface whitespace-nowrap">
-          {formatPrice(sake.price)}
-        </span>
-      </div>
-
-      <div className="flex items-center gap-4 mt-4">
-        {sake.smv != null && (
-          <span className="label-sm">
-            SMV {sake.smv > 0 ? `+${sake.smv}` : sake.smv}
-          </span>
-        )}
-        <span className="label-sm">
-          Acid {sake.acidity}
-        </span>
-        {sake.style && (
-          <span className="badge-style capitalize">{sake.style}</span>
+    <Link href={`/sake/${sake.slug}`} className="sake-card group block">
+      <div className="flex-1 min-w-0">
+        <h3 className="font-headline text-lg text-on-surface leading-tight">
+          {sake.name}
+        </h3>
+        {metaLine && (
+          <p className="font-label text-[10px] uppercase tracking-widest text-outline mt-1 leading-relaxed">
+            {metaLine}
+          </p>
         )}
       </div>
-
-      {sake.flavorTags.length > 0 && (
-        <div className="flex flex-wrap gap-1.5 mt-4">
-          {sake.flavorTags.map((tag) => (
-            <span key={tag} className="badge-flavor capitalize">
-              {tag}
-            </span>
-          ))}
-        </div>
-      )}
+      <span className="font-headline text-base text-on-surface whitespace-nowrap ml-4">
+        {formatPrice(sake.price)}
+      </span>
     </Link>
   );
 }

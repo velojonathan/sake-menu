@@ -14,15 +14,16 @@ export default async function HomePage() {
   return (
     <>
       <Header />
-      <main className="max-w-7xl mx-auto px-8 sm:px-10 lg:px-12">
-        {/* Hero — asymmetrical editorial spacing */}
-        <section className="pt-16 pb-10 sm:pt-20 sm:pb-14">
-          <h1 className="display-lg">
-            Explore Our Sake Collection
+      <main className="max-w-2xl mx-auto px-6 pt-16">
+        {/* Hero — minimal, refined */}
+        <section className="pt-12 pb-8">
+          <p className="label-sm text-outline mb-3">Curated Selection</p>
+          <h1 className="font-headline text-3xl sm:text-4xl font-bold tracking-tight text-on-surface leading-tight">
+            Discover the<br />Soul of Rice
           </h1>
-          <p className="mt-4 text-base sm:text-lg text-on-surface-variant max-w-xl">
-            Discover the perfect sake for your palate. Browse by flavor profile,
-            sweetness, acidity, and more.
+          <p className="mt-4 font-body text-sm text-on-surface-variant max-w-md leading-relaxed">
+            A guided journey through Japan&apos;s finest expressions.
+            Explore by flavor, sweetness, acidity, and more.
           </p>
         </section>
 

@@ -17,12 +17,12 @@ const manrope = Manrope({
 });
 
 export const metadata: Metadata = {
-  title: 'Sake Menu | Explore Our Collection',
+  title: 'OMAKASE | Curated Sake Collection',
   description:
-    'Discover our curated selection of premium Japanese sake. Explore by flavor, style, and taste profile.',
+    'Discover the soul of rice. Explore our curated selection of premium Japanese sake by flavor, style, and taste profile.',
   openGraph: {
-    title: 'Sake Menu',
-    description: 'Explore our curated sake collection',
+    title: 'OMAKASE',
+    description: 'Discover the soul of rice',
     type: 'website',
   },
 };
@@ -41,7 +41,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${notoSerif.variable} ${manrope.variable}`}>
-      <body className="min-h-screen bg-surface text-on-surface font-sans antialiased">{children}</body>
+      <body className="min-h-screen bg-surface text-on-surface font-body antialiased selection:bg-secondary-container">{children}</body>
     </html>
   );
 }
