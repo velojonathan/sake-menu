@@ -1,0 +1,102 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-cream: #fdfbf7;
+    --color-charcoal: #1a1a1a;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-cream text-charcoal;
+  }
+}
+
+@layer components {
+  .sake-card {
+    @apply rounded-xl bg-white shadow-sm border border-sake-100 
+           transition-all duration-200 hover:shadow-md hover:border-sake-200;
+  }
+
+  .filter-section {
+    @apply bg-white rounded-xl border border-sake-100 p-4;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-lg
+           bg-sake-800 text-white px-4 py-2 text-sm font-medium
+           transition-colors hover:bg-sake-900
+           focus:outline-none focus:ring-2 focus:ring-sake-500 focus:ring-offset-2
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center rounded-lg
+           bg-white text-sake-800 border border-sake-200 px-4 py-2 text-sm font-medium
+           transition-colors hover:bg-sake-50
+           focus:outline-none focus:ring-2 focus:ring-sake-500 focus:ring-offset-2
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .input-field {
+    @apply w-full rounded-lg border border-sake-200 bg-white px-3 py-2 text-sm
+           placeholder:text-sake-400
+           focus:outline-none focus:ring-2 focus:ring-sake-500 focus:border-transparent
+           transition-colors;
+  }
+
+  .badge {
+    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium;
+  }
+
+  .badge-flavor {
+    @apply badge bg-sake-100 text-sake-800;
+  }
+
+  .badge-style {
+    @apply badge bg-amber-50 text-amber-800 border border-amber-200;
+  }
+}
+
+/* Custom range slider styling */
+input[type='range'] {
+  @apply w-full h-2 rounded-lg appearance-none cursor-pointer bg-sake-200;
+}
+
+input[type='range']::-webkit-slider-thumb {
+  @apply appearance-none w-4 h-4 rounded-full bg-sake-700 cursor-pointer
+         shadow-sm border-2 border-white;
+}
+
+input[type='range']::-moz-range-thumb {
+  @apply w-4 h-4 rounded-full bg-sake-700 cursor-pointer
+         shadow-sm border-2 border-white;
+}
+
+/* Recharts tooltip customization */
+.recharts-tooltip-wrapper {
+  @apply !outline-none;
+}
+
+/* Smooth scrolling for anchor links */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Loading skeleton animation */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #f3efe8 25%, #e6ddd0 50%, #f3efe8 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
